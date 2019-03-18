@@ -3,6 +3,9 @@
 01 - Obter numero de telefone a parter de um id
 02 - Obter endereço
 */
+const util = require("util");
+
+const obterEndereAsync = util.promisify(obterEndereco);
 
 function obterUsuario() {
   return new Promise(function resolvePromise(resolve, reject) {
@@ -51,7 +54,21 @@ usuarioPromise
     });
   })
   .then(function(resultado) {
-    console.log("Resultado", resultado);
+    const endereco = obterEndereAsync(resultado.usuario.id);
+    return endereco.then(function resolverEndereco(result) {
+      return {
+        usuario: resultado.usuario,
+        telefone: resultado.telefone,
+        endereco: result
+      };
+    });
+  })
+  .then(function(resultado) {
+    console.log(`
+      Nome: ${resultado.usuario.nome},
+      Telefone:(${resultado.telefone.ddd}) ${resultado.telefone.tel},
+      Endereço: ${resultado.endereco.end} ${resultado.endereco.numero}    
+    `);
   })
   .catch(function(error) {
     console.error("Algo deu errado", error);
