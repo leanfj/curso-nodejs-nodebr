@@ -21,6 +21,17 @@ emissor.emit(evento, "no menu");
 
 const stdin = process.openStdin();
 
-stdin.addListener("data", function(valor) {
-  console.log(`Você digitou: ${valor.toString().trim()}`);
+// Promise ideal para um unica manipulação do dado
+// Event emitter funciona bem para monitorar eventos repetitivos
+function main() {
+  return new Promise(function(resolve, reject) {
+    stdin.addListener("data", function(valor) {
+      // console.log(`Você digitou: ${valor.toString().trim()}`);
+      return resolve(valor);
+    });
+  });
+}
+
+main().then(function(resultado) {
+  console.log(`Resulatado é ${resultado.toString()}`);
 });
