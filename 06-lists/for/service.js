@@ -9,6 +9,13 @@ async function obterPessoas(nome) {
   return resposta.data;
 }
 
+async function obterEstado(UF) {
+  const queryURL = `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${UF}/mesorregioes`;
+
+  const resposta = await axios.get(queryURL);
+  return resposta.data;
+}
+
 // obterPessoas("r2")
 //   .then(function(resultado) {
 //     console.log("resultado", resultado);
@@ -17,5 +24,6 @@ async function obterPessoas(nome) {
 //     console.error("DEU RUIM", error);
 //   });
 module.exports = {
-  obterPessoas
+  obterPessoas,
+  obterEstado
 };
