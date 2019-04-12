@@ -1,4 +1,4 @@
-const { obterEstado } = require("./service");
+const { obterEstado, obterPessoas } = require("./service");
 
 Array.prototype.meuFilter = function(callback) {
   lista = [];
@@ -9,21 +9,24 @@ Array.prototype.meuFilter = function(callback) {
     if (!result) continue;
     lista.push(item);
   }
+
+  return lista;
 };
 
 async function main() {
   try {
-    const resultado = await obterEstado(`33`);
-    const nome = resultado.filter(function(item) {
-      console.log(item);
-    });
+    const resultado = await obterPessoas(`a`);
+    // const nome = resultado.filter(function(item) {
+    //   console.log(item);
+    // });
 
-    const sigla = resultado.meuFilter(
-      item => item.sigla.toLowerCase().indexOf(`J`) !== -1
+    const familiaLars = resultado.results.meuFilter(
+      item => item.name.toLowerCase().indexOf(`lars`) !== -1
     );
-    const nomesRegiao = nome.map(regiao => regiao.nome);
 
-    console.log(nomesRegiao);
+    const pessoas = familiaLars.map(item => item.name);
+
+    console.log(pessoas);
   } catch (error) {
     console.error("Algo de Errado", error);
   }
