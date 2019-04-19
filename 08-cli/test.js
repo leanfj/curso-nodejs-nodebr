@@ -12,8 +12,18 @@ describe("FAC manipulation", () => {
   it("Should list of FAC registred with Id", async () => {
     const expected = DEFAULT_FAC;
 
-    const [positionOne] = await dataBase.readFACS(expected.id);
+    const [positionOne] = await dataBase.listFACS(expected.id);
 
     deepEqual(positionOne, expected);
+  });
+
+  it("Should register a FAC", async () => {
+    const expected = DEFAULT_FAC;
+
+    await dataBase.registerFAC(expected);
+
+    const [actual] = await dataBase.listFACS(expected.id);
+
+    deepEqual(actual, expected);
   });
 });
