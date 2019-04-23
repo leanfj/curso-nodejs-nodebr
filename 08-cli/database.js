@@ -1,4 +1,4 @@
-const { readFile, readFileSync, writeFile, writeFileSync } = require("fs");
+const { readFile, writeFile } = require("fs");
 const { promisify } = require("util");
 
 const readFileAsync = promisify(readFile);
@@ -24,11 +24,11 @@ class Database {
   async registerFAC(FAC) {
     const data = await this.readFACS();
 
-    const id = FAC.id <= 1 ? Date.now() : FAC.id;
-    FAC.id = id;
+    const id = FAC.id <= 2 ? FAC.id : Date.now();
 
     const FACWithId = {
-      ...FAC
+      ...FAC,
+      id
     };
 
     const finalData = [...data, FACWithId];
@@ -62,6 +62,26 @@ class Database {
     data.splice(index, 1);
 
     return await this.writeFAC(data);
+  }
+
+  async updateFAC(id, modifications) {
+    const data = await this.readFACS();
+
+    const index = data.findIndex(item => item.id === id);
+
+    if (index === -1) {
+      throw Error("FAC não foi encontrada");
+    }
+
+    const currentItem = data[index];
+
+    const itemUpdated = {
+      ...currentItem,
+      ...modifications
+    };
+    data.splice(index, 1);
+
+    return await this.writeFAC([...data, itemUpdated]);
   }
 }
 
