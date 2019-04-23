@@ -9,6 +9,10 @@ const DEFAULT_FAC = {
 };
 
 describe("FAC manipulation", () => {
+  before(async () => {
+    await dataBase.registerFAC(DEFAULT_FAC);
+  });
+
   it("Should list of FAC registred with Id", async () => {
     const expected = DEFAULT_FAC;
 
@@ -25,5 +29,13 @@ describe("FAC manipulation", () => {
     const [actual] = await dataBase.listFACS(expected.id);
 
     deepEqual(actual, expected);
+  });
+
+  it("Should remove a FAC", async () => {
+    const expected = true;
+
+    const result = await dataBase.removeFAC(DEFAULT_FAC.id);
+
+    deepEqual(result, expected);
   });
 });

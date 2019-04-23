@@ -24,10 +24,10 @@ class Database {
   async registerFAC(FAC) {
     const data = await this.readFACS();
 
-    const id = FAC.id <= 2 ? FAC.id : Date.now();
+    const id = FAC.id <= 1 ? Date.now() : FAC.id;
+    FAC.id = id;
 
     const FACWithId = {
-      id,
       ...FAC
     };
 
@@ -44,6 +44,24 @@ class Database {
     const dataFiltered = data.filter(item => (item ? item.id === id : true));
 
     return dataFiltered;
+  }
+
+  async removeFAC(id) {
+    if (!id) {
+      return await this.writeFAC([]);
+    }
+
+    const data = await this.readFACS();
+
+    const index = data.findIndex(item => item.id === parseInt(id));
+
+    if (index === -1) {
+      throw Error("A FAC não foi encontrada");
+    }
+
+    data.splice(index, 1);
+
+    return await this.writeFAC(data);
   }
 }
 
