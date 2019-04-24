@@ -27,7 +27,8 @@ class Database {
     const id = FAC.id <= 2 ? FAC.id : Date.now();
 
     const FACWithId = {
-      ...FAC,
+      facNumber: parseInt(FAC.facNumber),
+      category: parseInt(FAC.category),
       id
     };
 
@@ -41,7 +42,7 @@ class Database {
   async listFACS(id) {
     const data = await this.readFACS();
 
-    const dataFiltered = data.filter(item => (item ? item.id === id : true));
+    const dataFiltered = data.filter(item => (id ? item.id === id : true));
 
     return dataFiltered;
   }
@@ -79,6 +80,7 @@ class Database {
       ...currentItem,
       ...modifications
     };
+
     data.splice(index, 1);
 
     return await this.writeFAC([...data, itemUpdated]);
