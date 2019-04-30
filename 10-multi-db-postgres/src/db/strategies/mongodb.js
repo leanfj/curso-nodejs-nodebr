@@ -5,6 +5,8 @@ class MongoDB extends ICRUD {
     super();
   }
 
+  isConnected() {}
+
   create(item) {
     console.log("O item foi salvo no MongoDB");
   }
