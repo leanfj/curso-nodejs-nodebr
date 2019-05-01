@@ -46,10 +46,6 @@ class PostgresDB extends ICRUD {
 
     await this._facs.sync();
   }
-  async create(item) {
-    const { dataValues } = await this._facs.create(item);
-    return dataValues;
-  }
 
   async connect() {
     this._DRIVER = new Sequelize("facs", "leanfj", "senhasecreta", {
@@ -60,6 +56,15 @@ class PostgresDB extends ICRUD {
     });
 
     await this.defineModel();
+  }
+
+  async create(item) {
+    const { dataValues } = await this._facs.create(item);
+    return dataValues;
+  }
+
+  async read(item = {}) {
+    return await this._facs.findAll({ where: item, raw: true });
   }
 }
 

@@ -25,4 +25,10 @@ describe("Postgres Strategy", function() {
     delete result.id;
     assert.deepEqual(result, MOCK_FAC);
   });
+
+  it("Should be return data with FAC number", async function() {
+    const [result] = await postgresStrategy.read({ fac: MOCK_FAC.fac });
+    delete result.id;
+    assert.deepEqual(result, MOCK_FAC);
+  });
 });
