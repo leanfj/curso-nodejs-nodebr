@@ -5,8 +5,7 @@ class PostgresDB extends ICRUD {
   constructor() {
     super();
     this._DRIVER = null;
-    this.facs = null;
-    this._connect();
+    this._facs = null;
   }
 
   async isConnected() {
@@ -19,21 +18,8 @@ class PostgresDB extends ICRUD {
     }
   }
 
-  create(item) {
-    console.log("O item foi salvo no PostgresDB");
-  }
-
-  _connect() {
-    this._DRIVER = new Sequelize("facs", "leanfj", "senhasecreta", {
-      host: "localhost",
-      dialect: "postgres",
-      quoteIdentifiers: false,
-      operatorAliases: false
-    });
-  }
-
   async defineModel() {
-    this.facs = DRIVER.define(
+    this._facs = this._DRIVER.define(
       "facs",
       {
         id: {
@@ -58,7 +44,22 @@ class PostgresDB extends ICRUD {
       }
     );
 
-    await Facs.sync();
+    await this._facs.sync();
+  }
+  async create(item) {
+    const { dataValues } = await this._facs.create(item);
+    return dataValues;
+  }
+
+  async connect() {
+    this._DRIVER = new Sequelize("facs", "leanfj", "senhasecreta", {
+      host: "localhost",
+      dialect: "postgres",
+      quoteIdentifiers: false,
+      operatorAliases: false
+    });
+
+    await this.defineModel();
   }
 }
 
