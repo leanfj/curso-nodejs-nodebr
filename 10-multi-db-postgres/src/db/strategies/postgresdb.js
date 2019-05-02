@@ -66,6 +66,13 @@ class PostgresDB extends ICRUD {
   async read(item = {}) {
     return await this._facs.findAll({ where: item, raw: true });
   }
+
+  async update(id, item) {
+    return await this._facs.update(item, {
+      where: { id: id },
+      returning: true
+    });
+  }
 }
 
 module.exports = PostgresDB;
