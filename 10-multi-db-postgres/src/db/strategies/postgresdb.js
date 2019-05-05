@@ -73,6 +73,11 @@ class PostgresDB extends ICRUD {
       returning: true
     });
   }
+
+  async remove(id) {
+    const query = id ? { id } : {};
+    return await this._facs.destroy({ where: query });
+  }
 }
 
 module.exports = PostgresDB;

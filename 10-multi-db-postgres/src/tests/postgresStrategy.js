@@ -18,16 +18,17 @@ describe("Postgres Strategy", function() {
 
   this.beforeAll(async function() {
     await postgresStrategy.connect();
+    await postgresStrategy.remove();
     await postgresStrategy.create(MOCK_FAC_UPDATE);
   });
 
-  it("PostgresSQL Connection", async function() {
+  it("Should connect in PostgresSQL Database", async function() {
     const result = await postgresStrategy.isConnected();
 
     assert.equal(result, true);
   });
 
-  it("Cadastar nova FAC", async function() {
+  it("Should register new FAC", async function() {
     const result = await postgresStrategy.create(MOCK_FAC);
     delete result.id;
     assert.deepEqual(result, MOCK_FAC);
@@ -54,5 +55,13 @@ describe("Postgres Strategy", function() {
     );
 
     assert.deepEqual(dataValues.fac, newItem.fac);
+  });
+
+  it("Should be remove item with ID", async function() {
+    const [item] = await postgresStrategy.read({});
+
+    const result = await postgresStrategy.remove(item.id);
+
+    assert.deepEqual(result, true);
   });
 });

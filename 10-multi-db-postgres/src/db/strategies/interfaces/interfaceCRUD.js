@@ -14,7 +14,7 @@ class ICrud {
   update(id, item) {
     throw new NotImplementedException();
   }
-  delete(id) {
+  remove(id) {
     throw new NotImplementedException();
   }
   isConnected() {
