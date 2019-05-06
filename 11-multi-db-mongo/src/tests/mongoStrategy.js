@@ -26,4 +26,10 @@ describe("Mongo Strategy", function() {
     const expected = "Conectado";
     assert.equal(result, expected);
   });
+
+  it("Should register new item in Mongo Databse", async function() {
+    const { fac, category } = await mongoStrategy.create(MOCK_FAC);
+
+    assert.deepEqual({ fac, category }, MOCK_FAC);
+  });
 });

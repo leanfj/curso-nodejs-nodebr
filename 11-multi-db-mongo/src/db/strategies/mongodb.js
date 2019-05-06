@@ -65,13 +65,16 @@ class MongoDB extends ICRUD {
     );
 
     const connection = mongoose.connection;
-    connection.once("open", () => console.log("Conexão realizado com sucesso"));
 
     this._DRIVER = connection;
+
+    connection.once("open", () => console.log("Conexão realizado com sucesso"));
+
+    this.defineModel();
   }
 
-  create(item) {
-    console.log("O item foi salvo no MongoDB");
+  async create(item) {
+    return await this._facs.create(item);
   }
 
   read(item = {}) {}
