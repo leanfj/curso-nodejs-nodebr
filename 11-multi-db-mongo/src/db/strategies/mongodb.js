@@ -77,7 +77,9 @@ class MongoDB extends ICRUD {
     return await this._facs.create(item);
   }
 
-  read(item = {}) {}
+  async read(item = {}) {
+    return await this._facs.find(item);
+  }
 
   update(id, item) {}
 

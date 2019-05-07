@@ -32,4 +32,17 @@ describe("Mongo Strategy", function() {
 
     assert.deepEqual({ fac, category }, MOCK_FAC);
   });
+
+  it("Should list item with query", async function() {
+    const query = { fac: MOCK_FAC.fac };
+
+    const [{ fac, category }] = await mongoStrategy.read(query);
+
+    const result = {
+      fac,
+      category
+    };
+
+    assert.deepEqual(result, MOCK_FAC);
+  });
 });
