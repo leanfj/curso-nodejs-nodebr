@@ -73,15 +73,17 @@ class MongoDB extends ICRUD {
     this.defineModel();
   }
 
-  async create(item) {
-    return await this._facs.create(item);
+  create(item) {
+    return this._facs.create(item);
   }
 
-  async read(item = {}) {
-    return await this._facs.find(item);
+  read(item = {}) {
+    return this._facs.find(item);
   }
 
-  update(id, item) {}
+  update(id, item) {
+    return this._facs.updateOne({ _id: id }, { $set: item });
+  }
 
   remove(id) {}
 }

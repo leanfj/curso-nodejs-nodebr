@@ -14,11 +14,17 @@ const MOCK_FAC_UPDATE = {
   category: 40
 };
 
+let MOCK_FAC_UPDATE_ID = "";
+
 describe("Mongo Strategy", function() {
   this.timeout(Infinity);
 
   this.beforeAll(async function() {
     await mongoStrategy.connect();
+
+    const result = await mongoStrategy.create(MOCK_FAC_UPDATE);
+
+    MOCK_FAC_UPDATE_ID = result.id;
   });
 
   it("Should connect in Mongo Database", async function() {
@@ -44,5 +50,13 @@ describe("Mongo Strategy", function() {
     };
 
     assert.deepEqual(result, MOCK_FAC);
+  });
+
+  it("Should update item with id", async function() {
+    const result = await mongoStrategy.update(MOCK_FAC_UPDATE_ID, {
+      category: 30
+    });
+
+    assert.deepEqual(result.nModified, 1);
   });
 });
