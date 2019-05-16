@@ -85,7 +85,9 @@ class MongoDB extends ICRUD {
     return this._facs.updateOne({ _id: id }, { $set: item });
   }
 
-  remove(id) {}
+  remove(id) {
+    return this._facs.deleteOne({ _id: id });
+  }
 }
 
 module.exports = MongoDB;
