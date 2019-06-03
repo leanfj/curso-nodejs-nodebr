@@ -4,6 +4,8 @@ const api = require("./../api");
 
 let app = {};
 
+const MOCK_FAC_NUMERO = 444333;
+
 describe("Suite de testes da API FACS", function() {
   this.beforeAll(async () => {
     app = await api;
@@ -27,5 +29,17 @@ describe("Suite de testes da API FACS", function() {
 
     assert.deepEqual(statusCode, 200);
     assert.ok(result.length === 5);
+  });
+
+  it("Deve retornar um item registrado com parametro fac enviado", async () => {
+    const { result, statusCode } = await app.inject({
+      method: "GET",
+      url: `/facs?fac=${MOCK_FAC_NUMERO}`
+    });
+
+    const [primeiroRegistro] = result;
+
+    assert.deepEqual(statusCode, 200);
+    assert.ok(primeiroRegistro.fac, MOCK_FAC_NUMERO);
   });
 });
