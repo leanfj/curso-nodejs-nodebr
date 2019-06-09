@@ -77,6 +77,52 @@ class FACRoutes extends BaseRoute {
       }
     };
   }
+
+  atualizarFAC() {
+    return {
+      path: "/facs/{id}",
+      method: "PATCH",
+      config: {
+        validate: {
+          params: {
+            id: joi.string().required()
+          },
+          payload: {
+            fac: joi.number().integer(),
+            category: joi.number().integer()
+          }
+        }
+      },
+      handler: async request => {
+        try {
+          const { id } = request.params;
+
+          const { payload } = request;
+
+          const dadoString = JSON.stringify(payload);
+
+          const dados = JSON.parse(dadoString);
+
+          const result = await this.db.update(id, dados);
+
+          if (result.nModified !== 1) {
+            return {
+              ...result,
+              message: "Não Foi possível atualizar"
+            };
+          }
+
+          return {
+            ...result,
+            message: "FAC atualizada com sucesso"
+          };
+        } catch (error) {
+          console.log("Algo de inesperado aconteceu =>", error);
+          return "Erro interno do serviço";
+        }
+      }
+    };
+  }
 }
 
 module.exports = FACRoutes;

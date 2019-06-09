@@ -16,19 +16,22 @@ const MOCK_FAC_PARA_ATUALIZAR = {
   category: 30
 };
 
-let MOCK_PARA_ATUALIZAR_ID = "";
+let MOCK_ID_PARA_ATUALIZAR = "";
+
+const MOCK_ID_ERRADO = "5cdcc4b111c2a36bd6b65ad4";
 
 describe("Suite de testes da API FACS", function() {
   this.beforeAll(async () => {
     app = await api;
 
-    const { result } = await app.inject({
+    const result = await app.inject({
       method: "POST",
       url: "/facs",
       payload: MOCK_FAC_PARA_ATUALIZAR
     });
 
-    MOCK_PARA_ATUALIZAR_ID = result._id;
+    const dados = JSON.parse(result.payload);
+    MOCK_ID_PARA_ATUALIZAR = dados.result._id;
   });
 
   it("Deve listar as facs cadastradas na rota /facs", async () => {
@@ -80,12 +83,26 @@ describe("Suite de testes da API FACS", function() {
 
     const { result, statusCode } = await app.inject({
       method: "PATCH",
-      url: `/facs/${MOCK_PARA_ATUALIZAR_ID}`,
+      url: `/facs/${MOCK_ID_PARA_ATUALIZAR}`,
       payload: { fac: novaFAC }
     });
 
     assert.deepEqual(statusCode, 200);
     assert.deepEqual(result.message, "FAC atualizada com sucesso");
-    assert(result, 1);
+    assert.ok(result.n, 1);
+  });
+
+  it("Deve retornar erro ao atualizar um item invalido", async () => {
+    const novaFAC = 777666;
+
+    const { result, statusCode } = await app.inject({
+      method: "PATCH",
+      url: `/facs/${MOCK_ID_ERRADO}`,
+      payload: { fac: novaFAC }
+    });
+
+    assert.deepEqual(statusCode, 200);
+    assert.deepEqual(result.message, "Não Foi possível atualizar");
+    assert.ok(result.n === 0);
   });
 });
