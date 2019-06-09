@@ -57,7 +57,7 @@ class FACRoutes extends BaseRoute {
       config: {
         validate: {
           failAction: (request, headers, erro) => {
-            throw erro
+            throw erro;
           },
           payload: {
             fac: joi.number().integer(),
@@ -67,15 +67,15 @@ class FACRoutes extends BaseRoute {
       },
       handler: async (request, handlers) => {
         try {
-          const { fac, category } = request.payload
-          const result = await this.db.create({ fac, category })
-          return result
+          const { fac, category } = request.payload;
+          const result = await this.db.create({ fac, category });
+          return { result, message: "FAC cadastrada com sucesso" };
         } catch (error) {
-          console.log("Algo de inesperado aconteceu", error)
-          return "Erro interno do serviço"
+          console.log("Algo de inesperado aconteceu", error);
+          return "Erro interno do serviço";
         }
       }
-    }
+    };
   }
 }
 

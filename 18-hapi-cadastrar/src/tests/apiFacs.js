@@ -9,9 +9,9 @@ const MOCK_FAC_NUMERO = 444333;
 const MOCK_FAC_CADASTRAR = {
   fac: 456456,
   category: 45
-}
+};
 
-describe("Suite de testes da API FACS", function () {
+describe("Suite de testes da API FACS", function() {
   this.beforeAll(async () => {
     app = await api;
   });
@@ -49,13 +49,14 @@ describe("Suite de testes da API FACS", function () {
   });
 
   it("Deve cadastrar um item", async () => {
-    const { result, statusCode } = await app.inject({
+    const { result, statusCode, message } = await app.inject({
       method: "POST",
       url: "/facs",
       payload: MOCK_FAC_CADASTRAR
-    })
+    });
 
     assert.deepEqual(statusCode, 200);
-    assert.ok(result, MOCK_FAC_CADASTRAR)
-  })
+    assert.deepEqual(result.message, "FAC cadastrada com sucesso");
+    assert.ok(result, MOCK_FAC_CADASTRAR);
+  });
 });
