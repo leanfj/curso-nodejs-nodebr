@@ -32,10 +32,14 @@ module.exports = (async function main() {
     new MongoDB(connnectionMongoDB, FacSchema)
   );
 
-  const connectionPostgress = Postgress.connect();
+  const connectionPostgress = await Postgress.connect();
   const userModel = await Postgress.defineModel(
     connectionPostgress,
     UserSchema
+  );
+
+  const postgressContext = new Context(
+    new Postgress(connectionPostgress, userModel)
   );
 
   const swaggerOptions = {
@@ -69,7 +73,10 @@ module.exports = (async function main() {
   // Injeção de rotas automaticamente
   app.route([
     ...mapRoutes(new FACRoute(mongoDBContext), FACRoute.methods()),
-    ...mapRoutes(new AuthRoute(JWT_SECRET), AuthRoute.methods())
+    ...mapRoutes(
+      new AuthRoute(JWT_SECRET, postgressContext),
+      AuthRoute.methods()
+    )
   ]);
 
   await app.start();

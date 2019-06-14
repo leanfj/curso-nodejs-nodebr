@@ -14,8 +14,8 @@ class ContextStrategy extends ICRUD {
     return this._database.read(item, skip, limit);
   }
 
-  update(id, item) {
-    return this._database.update(id, item);
+  update(id, item, upsert = false) {
+    return this._database.update(id, item, upsert);
   }
 
   remove(id) {

@@ -14,7 +14,7 @@ const USER = {
 
 const USER_DB = {
   ...USER,
-  password: ""
+  password: "$2b$04$LjFcYiyDfgrF77ZVYuloauBeT2bW8Iv4EskM2uiJdklQTf.vBraPC"
 };
 
 describe("Teste de rotas de autorização da api", function() {
@@ -26,6 +26,9 @@ describe("Teste de rotas de autorização da api", function() {
       connectionPostgress,
       UserSchema
     );
+
+    const context = new Context(new Postgress(connectionPostgress, userModel));
+    await context.update(null, USER_DB, true);
   });
 
   it("Deve retorno um token", async () => {
@@ -33,13 +36,14 @@ describe("Teste de rotas de autorização da api", function() {
       method: "POST",
       url: "/login",
       payload: {
-        userName: "leanfj",
+        username: "leanfj",
         password: "123"
       }
     });
     const statusCode = result.statusCode;
     const dados = JSON.parse(result.payload);
 
+    console.log("dados =>", dados);
     assert.deepEqual(statusCode, 200);
     assert.ok(dados.token.length > 10);
   });
