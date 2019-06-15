@@ -60,13 +60,22 @@ module.exports = (async function main() {
   ]);
 
   //Estrategia de verificação de autorização
+
+  const validate = async function(decoded, request) {
+    // do your checks to see if the person is valid
+    const username = decoded.username;
+
+    const result = await postgressContext.read({ username });
+
+    if (!result) {
+      return { isValid: false };
+    } else {
+      return { isValid: true };
+    }
+  };
   app.auth.strategy("jwt", "jwt", {
     key: JWT_SECRET,
-    validate: (dados, request) => {
-      return {
-        isValid: true
-      };
-    }
+    validate: validate
   });
 
   app.auth.default("jwt");

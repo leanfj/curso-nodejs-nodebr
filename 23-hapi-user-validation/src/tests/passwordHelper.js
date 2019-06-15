@@ -8,7 +8,7 @@ const HASH_SENHA =
   "$2b$04$Ql2iemkijsY0ABMQBNMsy.28wiJ9LiW5Xa2JH73C8F92X8dJ40Iqm";
 
 describe("Suite de teste para password", function() {
-  it("Deve gerar um has a partir de un senha", async function() {
+  it("Deve gerar um hash a partir de un senha", async function() {
     const result = await PasswordHelper.hashPassword(SENHA);
 
     assert.ok(result.length > 10);

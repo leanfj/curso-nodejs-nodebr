@@ -9,7 +9,7 @@ const jwt = require("jsonwebtoken");
 const passwordHelper = require("./../helpers/passwordHelper");
 
 const USER = {
-  userName: "leanfj",
+  username: "leanfj",
   password: "123"
 };
 
@@ -31,16 +31,16 @@ class AuthRoute extends BaseRoute {
         notes: "Deve obeter token valido a partir de login e senha",
         validate: {
           payload: {
-            userName: joi.string().required(),
+            username: joi.string().required(),
             password: joi.string().required()
           }
         }
       },
       handler: async request => {
-        const { userName, password } = request.payload;
+        const { username, password } = request.payload;
 
         const [user] = await this.db.read({
-          userName: userName.toLowerCase()
+          username: username.toLowerCase()
         });
 
         if (!user) {
@@ -57,7 +57,7 @@ class AuthRoute extends BaseRoute {
         }
 
         // if (
-        //   userName.toLowerCase() !== USER.userName ||
+        //   username.toLowerCase() !== USER.username ||
         //   password !== USER.password
         // ) {
         //   return boom.unauthorized();
@@ -65,7 +65,7 @@ class AuthRoute extends BaseRoute {
 
         const token = jwt.sign(
           {
-            userName,
+            username,
             id: user.id
           },
           this.secret

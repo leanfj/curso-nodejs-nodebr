@@ -22,6 +22,7 @@ class FACRoutes extends BaseRoute {
       method: "GET",
       config: {
         tags: ["api"],
+        auth: "jwt",
         validate: {
           failAction: (request, headers, erro) => {
             throw erro;
@@ -44,7 +45,7 @@ class FACRoutes extends BaseRoute {
           }
         }
       },
-      handler: (request, headers) => {
+      handler: async request => {
         try {
           const { fac, skip, limit } = request.query;
 
@@ -64,6 +65,7 @@ class FACRoutes extends BaseRoute {
       method: "POST",
       config: {
         tags: ["api"],
+        auth: "jwt",
         validate: {
           failAction: (request, headers, erro) => {
             throw erro;
@@ -75,7 +77,7 @@ class FACRoutes extends BaseRoute {
           }
         }
       },
-      handler: async (request, handlers) => {
+      handler: async request => {
         try {
           const { fac, category } = request.payload;
           const result = await this.db.create({ fac, category });
@@ -93,6 +95,7 @@ class FACRoutes extends BaseRoute {
       method: "PATCH",
       config: {
         tags: ["api"],
+        auth: "jwt",
         validate: {
           params: {
             id: joi.string().required()
@@ -140,6 +143,7 @@ class FACRoutes extends BaseRoute {
       method: "DELETE",
       config: {
         tags: ["api"],
+        auth: "jwt",
         validate: {
           params: {
             id: joi.string().required()

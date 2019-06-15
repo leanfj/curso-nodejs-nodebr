@@ -19,10 +19,10 @@ let MOCK_ID_PARA_ATUALIZAR = "";
 const MOCK_ID_ERRADO = "5cdcc4b111c2a36bd6b65ad4";
 
 const TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImxlYW5maiIsImlkIjoxLCJpYXQiOjE1NjAxMzYzMDZ9.IV7XgIxEEU-zIpYAwMNvt2mVfeL3P6lHpxTez7MrMN0";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxlYW5maiIsImlkIjo3NywiaWF0IjoxNTYwNjM3ODQzfQ.-TYwaOAjrx--D9EyC67wO-724PEoNDAYgsBqivVCZCc";
 
 const headers = {
-  Authorization: TOKEN
+  authorization: TOKEN
 };
 
 describe("Suite de testes da API FACS", function() {
@@ -37,7 +37,6 @@ describe("Suite de testes da API FACS", function() {
     });
 
     const dados = JSON.parse(result.payload);
-
     MOCK_ID_PARA_ATUALIZAR = dados.result._id;
   });
 
@@ -77,7 +76,7 @@ describe("Suite de testes da API FACS", function() {
   });
 
   it("Deve cadastrar um item", async () => {
-    const { result, statusCode, message } = await app.inject({
+    const { result, statusCode } = await app.inject({
       method: "POST",
       url: "/facs",
       headers,
