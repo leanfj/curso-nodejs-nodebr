@@ -1,0 +1,3 @@
+[submodule "25-hapi-heroku"]
+	path = 25-hapi-heroku
+	url = ./25-hapi-heroku/
